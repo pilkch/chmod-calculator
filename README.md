@@ -1,0 +1,33 @@
+## chmod-calcuator
+
+### Building
+
+Install dependencies:
+```bash
+sudo dnf install rust cargo
+```
+
+Build everything:
+```bash
+cargo run
+```
+
+### Usage
+
+```bash
+$ ./chmod-calculator 765
+rwxrw-r-x
+$ ./chmod-calculator 0765
+rwxrw-r-x
+$ ./chmod-calculator rwxrw-r-x
+765
+$ ./chmod-calculator --table 765
+        Owner  Group Other
+Read    x      x     x
+Write   x      x
+Execute x            x
+```
+
+### Rationale
+
+I kept going to [chmod-calculator.com](https://chmod-calculator.com/) to convert to/from '0755' style permissions in ansible, but I always have a terminal open in VSCodium, so I thought why don't I just do it there?
