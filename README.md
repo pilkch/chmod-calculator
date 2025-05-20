@@ -30,4 +30,4 @@ Execute x            x
 
 ### Rationale
 
-I kept going to [chmod-calculator.com](https://chmod-calculator.com/) to convert to/from '0755' style permissions in ansible, but I always have a terminal open in VSCodium, so I thought why don't I just do it there?
+I kept going to [chmod-calculator.com](https://chmod-calculator.com/) to convert to/from '0755' style permissions in ansible, but I always have a terminal open in VSCodium, so I thought why don't I just do it there?  And I wanted an excuse to mess around with rust.
