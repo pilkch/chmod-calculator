@@ -29,6 +29,10 @@ pub fn parse_octal_string(input: String) -> Result<String, &'static str> {
 /// assert_eq!("rwxrw-r-x", octal_string_to_rwx_string("765".to_string()).unwrap());
 /// ```
 pub fn octal_string_to_rwx_string(input: String) -> Result<String, &'static str> {
+  if input.len() != 3 {
+    return Err("Invalid value");
+  }
+
   let mut rwx_string = String::new();
 
   for c in input.chars() {
@@ -59,6 +63,10 @@ pub fn octal_string_to_rwx_string(input: String) -> Result<String, &'static str>
 /// assert_eq!("765", rwx_string_to_octal_string("rwxrw-r-x".to_string()).unwrap());
 /// ```
 pub fn rwx_string_to_octal_string(input: String) -> Result<String, &'static str> {
+  if input.len() != 9 {
+    return Err("Invalid value");
+  }
+
   let mut octal_string = String::new();
 
   // Split up the user, group, other parts
@@ -178,18 +186,44 @@ mod test {
   fn parse_octal_string_parses_numbers() {
     assert_eq!("765", parse_octal_string("765".to_string()).unwrap());
     assert_eq!("765", parse_octal_string("0765".to_string()).unwrap());
+
+    // Failure conditions
+    assert_eq!(Err("Not a number"), parse_octal_string("".to_string()));
+    assert_eq!(Err("Not a number"), parse_octal_string("asfdasdds".to_string()));
+    assert_eq!(Err("Not a number"), parse_octal_string("--x-wxrwx".to_string()));
+    assert_eq!(Err("Invalid value"), parse_octal_string("-5".to_string()));
+    assert_eq!(Err("Invalid value"), parse_octal_string("789".to_string())); // Digits with a value greater than 7
+    assert_eq!(Err("Invalid value"), parse_octal_string("5000".to_string())); // Too many digits
   }
 
   #[test]
   fn octal_string_to_rwx_string_converts() {
     assert_eq!("--x-w--wx", octal_string_to_rwx_string("123".to_string()).unwrap());
     assert_eq!("rwxrw-r-x", octal_string_to_rwx_string("765".to_string()).unwrap());
+
+    // Failure conditions
+    assert_eq!(Err("Invalid value"), octal_string_to_rwx_string("".to_string()));
+    assert_eq!(Err("Invalid value"), octal_string_to_rwx_string("asfdasdds".to_string()));
+    assert_eq!(Err("Invalid value"), octal_string_to_rwx_string("--x-wxrwx".to_string()));
+    assert_eq!(Err("Invalid value"), octal_string_to_rwx_string("-5".to_string()));
+    assert_eq!(Err("Invalid value"), octal_string_to_rwx_string("0765".to_string())); // 0 should have been stripped before calling this function
+    assert_eq!(Err("Invalid character"), octal_string_to_rwx_string("789".to_string())); // Digits with a value greater than 7
+    assert_eq!(Err("Invalid value"), octal_string_to_rwx_string("5000".to_string()));
   }
 
   #[test]
   fn rwx_string_to_octal_string_converts() {
     assert_eq!("137", rwx_string_to_octal_string("--x-wxrwx".to_string()).unwrap());
     assert_eq!("765", rwx_string_to_octal_string("rwxrw-r-x".to_string()).unwrap());
+
+    // Failure conditions
+    assert_eq!(Err("Invalid value"), rwx_string_to_octal_string("0765".to_string()));
+    assert_eq!(Err("Invalid value"), rwx_string_to_octal_string("".to_string()));
+    assert_eq!(Err("Invalid characters"), rwx_string_to_octal_string("asfdasdds".to_string())); // Invalid characters
+    assert_eq!(Err("Invalid value"), rwx_string_to_octal_string("---x-wxrwx".to_string())); // Too many characters
+    assert_eq!(Err("Invalid value"), rwx_string_to_octal_string("-x-wxrwx".to_string())); // Not enough characters
+    assert_eq!(Err("Invalid value"), rwx_string_to_octal_string("-5".to_string()));
+    assert_eq!(Err("Invalid value"), rwx_string_to_octal_string("5000".to_string()));
   }
 
   #[test]
