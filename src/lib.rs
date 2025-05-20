@@ -1,14 +1,11 @@
-#[cfg(test)]
-#[macro_use(quickcheck)]
-extern crate quickcheck_macros;
 
 /// Parses an octal string
 ///
 /// ```
 /// use chmod_calculator::parse_octal_string;
 ///
-/// assert_eq!("765", parse_octal_string("765"));
-/// assert_eq!("765", parse_octal_string("0765"));
+/// assert_eq!("765", parse_octal_string("765".to_string()).unwrap());
+/// assert_eq!("765", parse_octal_string("0765".to_string()).unwrap());
 /// ```
 pub fn parse_octal_string(input: String) -> Result<String, &'static str> {
   match input.parse::<i32>() {
@@ -26,10 +23,10 @@ pub fn parse_octal_string(input: String) -> Result<String, &'static str> {
 /// Converts an octal chmod value to a rwx string
 ///
 /// ```
-/// use chmod_calculator::octal_to_rwx_string;
+/// use chmod_calculator::octal_string_to_rwx_string;
 ///
-/// assert_eq!("--x-wxrwx", octal_to_rwx_string("123"));
-/// assert_eq!("rwxrw-r-x", octal_to_rwx_string("765"));
+/// assert_eq!("--x-w--wx", octal_string_to_rwx_string("123".to_string()).unwrap());
+/// assert_eq!("rwxrw-r-x", octal_string_to_rwx_string("765".to_string()).unwrap());
 /// ```
 pub fn octal_string_to_rwx_string(input: String) -> Result<String, &'static str> {
   let mut rwx_string = String::new();
@@ -58,8 +55,8 @@ pub fn octal_string_to_rwx_string(input: String) -> Result<String, &'static str>
 /// ```
 /// use chmod_calculator::rwx_string_to_octal_string;
 ///
-/// assert_eq!("137", rwx_string_to_octal_string("--x-wxrwx"));
-/// assert_eq!("765", rwx_string_to_octal_string("rwxrw-r-x"));
+/// assert_eq!("137", rwx_string_to_octal_string("--x-wxrwx".to_string()).unwrap());
+/// assert_eq!("765", rwx_string_to_octal_string("rwxrw-r-x".to_string()).unwrap());
 /// ```
 pub fn rwx_string_to_octal_string(input: String) -> Result<String, &'static str> {
   let mut octal_string = String::new();
@@ -91,8 +88,6 @@ pub fn rwx_string_to_octal_string(input: String) -> Result<String, &'static str>
   return Ok(octal_string.to_string());
 }
 
-
-
 /// Prints out an rwx string as a table
 ///
 /// Output:
@@ -104,7 +99,10 @@ pub fn rwx_string_to_octal_string(input: String) -> Result<String, &'static str>
 /// ```
 /// use chmod_calculator::rwx_string_to_table;
 ///
-/// assert_eq!(765, rwx_string_to_table("--x-wxrwx"));
+/// assert_eq!("        Owner  Group Other\n\
+///    Read                 x\n\
+///    Write          x     x\n\
+///    Execute x      x     x\n", rwx_string_to_table("--x-wxrwx".to_string()).unwrap());
 /// ```
 pub fn rwx_string_to_table(input: String) -> Result<String, &'static str> {
   let mut x_and_spaces = String::new();
@@ -163,4 +161,42 @@ pub fn convert(input: String, table: bool) -> Result<String, &'static str> {
       }
     }
   };
+}
+
+
+// This entire test module will be excluded from the normal builds. Tests don't actually
+// _need_ to be inside of a test module like this, but it does make it easier to keep things
+// clean and organized.
+#[cfg(test)]
+mod test {
+  use super::parse_octal_string;
+  use super::octal_string_to_rwx_string;
+  use super::rwx_string_to_octal_string;
+  use super::rwx_string_to_table;
+
+  #[test]
+  fn parse_octal_string_parses_numbers() {
+    assert_eq!("765", parse_octal_string("765".to_string()).unwrap());
+    assert_eq!("765", parse_octal_string("0765".to_string()).unwrap());
+  }
+
+  #[test]
+  fn octal_string_to_rwx_string_converts() {
+    assert_eq!("--x-w--wx", octal_string_to_rwx_string("123".to_string()).unwrap());
+    assert_eq!("rwxrw-r-x", octal_string_to_rwx_string("765".to_string()).unwrap());
+  }
+
+  #[test]
+  fn rwx_string_to_octal_string_converts() {
+    assert_eq!("137", rwx_string_to_octal_string("--x-wxrwx".to_string()).unwrap());
+    assert_eq!("765", rwx_string_to_octal_string("rwxrw-r-x".to_string()).unwrap());
+  }
+
+  #[test]
+  fn rwx_string_to_table_generates() {
+    assert_eq!("        Owner  Group Other\n\
+    Read                 x\n\
+    Write          x     x\n\
+    Execute x      x     x\n", rwx_string_to_table("--x-wxrwx".to_string()).unwrap());
+  }
 }

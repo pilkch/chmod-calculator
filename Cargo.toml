@@ -1,5 +1,5 @@
 [package]
-name = "chmod-calculator"
+name = "chmod_calculator"
 version = "0.1.0"
 authors = ["Chris Pilkington <chris.pilkington@gmail.com>"]
 edition = "2024"
@@ -12,6 +12,4 @@ path = "src/main.rs"
 
 
 [dev-dependencies]
-quickcheck = "1.0.3"
-quickcheck_macros = "1.1.0"
 assert_cmd = "2.0.17"

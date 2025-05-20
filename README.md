@@ -12,6 +12,12 @@ Build everything:
 cargo run
 ```
 
+### Tests
+
+```bash
+cargo test
+```
+
 ### Usage
 
 ```bash
