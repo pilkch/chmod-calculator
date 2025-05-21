@@ -2,6 +2,14 @@
 name = "chmod_calculator"
 version = "0.1.0"
 authors = ["Chris Pilkington <chris.pilkington@gmail.com>"]
+license = "GPL-2.0-or-later"
+description = "A tool for calculating chmod octal values and rwx style valus"
+readme = "README.md"
+homepage = "https://github.com/pilkch/chmod-calculator"
+repository = "https://github.com/pilkch/chmod-calculator"
+documentation = "https://github.com/pilkch/chmod-calculator"
+keywords = ["cli", "chmod"]
+categories = ["command-line-utilities"]
 edition = "2024"
 
 [[bin]]
