@@ -1,5 +1,7 @@
 ## chmod-calcuator
 
+Basic chmod calculator. Can convert between octal 0755 style and rwxr-xr-x style and can print a table of the permissions.
+
 ### Building
 
 Install dependencies:
@@ -9,7 +11,7 @@ sudo dnf install rust cargo
 
 Build everything:
 ```bash
-cargo run
+cargo build
 ```
 
 ### Tests

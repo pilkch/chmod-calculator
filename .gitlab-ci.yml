@@ -1,0 +1,25 @@
+stages:
+  - build
+  - tests
+
+default:
+  before_script:
+    - dnf install -y rust cargo
+
+build:
+  stage: build
+  tags:
+    - linux
+  script:
+    - cargo build
+  artifacts:
+    untracked: true
+
+unit-test:
+  stage: tests
+  needs: [build]
+  tags:
+    - linux
+  script:
+    - cargo test
+
