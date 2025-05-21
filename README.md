@@ -1,3 +1,5 @@
+[![Crates.io](https://img.shields.io/crates/v/chmod_calculator.svg)](https://crates.io/crates/chmod_calculator) [![Docs.rs](https://docs.rs/chmod_calculator/badge.svg)](https://docs.rs/chmod_calculator)
+
 ## chmod-calcuator
 
 Basic chmod calculator. Can convert between octal 0755 style and rwxr-xr-x style and can print a table of the permissions.
