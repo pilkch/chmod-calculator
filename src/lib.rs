@@ -110,7 +110,7 @@ pub fn rwx_string_to_octal_string(input: String) -> Result<String, &'static str>
 /// assert_eq!("        Owner  Group Other\n\
 ///    Read                 x\n\
 ///    Write          x     x\n\
-///    Execute x      x     x\n", rwx_string_to_table("--x-wxrwx".to_string()).unwrap());
+///    Execute x      x     x", rwx_string_to_table("--x-wxrwx".to_string()).unwrap());
 /// ```
 pub fn rwx_string_to_table(input: String) -> Result<String, &'static str> {
   let mut x_and_spaces = String::new();
@@ -131,7 +131,7 @@ pub fn rwx_string_to_table(input: String) -> Result<String, &'static str> {
     "        Owner  Group Other\n\
     Read    {}      {}     {}\n\
     Write   {}      {}     {}\n\
-    Execute {}      {}     {}\n",
+    Execute {}      {}     {}",
     x_and_spaces.chars().nth(0).expect("Not enough characters").to_string(), x_and_spaces.chars().nth(3).expect("Not enough characters").to_string(), x_and_spaces.chars().nth(6).expect("Not enough characters").to_string(),
     x_and_spaces.chars().nth(1).expect("Not enough characters").to_string(), x_and_spaces.chars().nth(4).expect("Not enough characters").to_string(), x_and_spaces.chars().nth(7).expect("Not enough characters").to_string(),
     x_and_spaces.chars().nth(2).expect("Not enough characters").to_string(), x_and_spaces.chars().nth(5).expect("Not enough characters").to_string(), x_and_spaces.chars().nth(8).expect("Not enough characters").to_string()
@@ -231,6 +231,6 @@ mod test {
     assert_eq!("        Owner  Group Other\n\
     Read                 x\n\
     Write          x     x\n\
-    Execute x      x     x\n", rwx_string_to_table("--x-wxrwx".to_string()).unwrap());
+    Execute x      x     x", rwx_string_to_table("--x-wxrwx".to_string()).unwrap());
   }
 }

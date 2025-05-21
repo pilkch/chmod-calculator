@@ -64,10 +64,11 @@ fn main() {
   match result {
     Ok(output) => println!("{}", output),
     Err(e) => {
-      println!("{}", e);
+      eprintln!("{}", e);
       std::process::exit(EXIT_FAILURE);
     }
   }
+
   std::process::exit(EXIT_SUCCESS);
 }
 
